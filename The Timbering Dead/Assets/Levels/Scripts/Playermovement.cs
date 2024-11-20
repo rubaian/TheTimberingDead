@@ -9,14 +9,20 @@ public class NewBehaviourScript : MonoBehaviour
     private float speed = 8f;
     private float jumpForce = 16f;
     private bool isFacingRight = true;
-
+    private bool grounded;
+    
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Animator anim;
+    
+
 
    void Start()
    {
-       
+        //references for animator from the object
+        anim = GetComponent<Animator>();
+        
    }
 
    void Update()
@@ -25,7 +31,7 @@ public class NewBehaviourScript : MonoBehaviour
         // Jump
         if (Input.GetButtonDown("Jump") && IsGrounded())
          {
-              rb.velocity = new UnityEngine.Vector2(rb.velocity.x, jumpForce);
+              Jump();
          }
         // Reduce jump force
         if(Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -34,6 +40,10 @@ public class NewBehaviourScript : MonoBehaviour
         }
 
        Flip();
+
+       //The set of the animator parametrs
+       anim.SetBool("Walk",horizontal !=0);
+       anim.SetBool("grounded",grounded);
    }
 
    private void FixedUpdate()
@@ -57,5 +67,19 @@ public class NewBehaviourScript : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
        }
+   }
+   //jump animation
+   private void Jump()
+   {
+    rb.velocity = new UnityEngine.Vector2(rb.velocity.x, jumpForce);
+    anim.SetTrigger("jump");
+    grounded = false;
+
+
+   }
+   private void OnCollisionEnter2D(Collision2D collision)
+   {
+    if(collision.gameObject.tag =="Ground")
+    grounded = true;
    }
 }
