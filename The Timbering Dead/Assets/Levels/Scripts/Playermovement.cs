@@ -42,7 +42,7 @@ public class NewBehaviourScript : MonoBehaviour
        Flip();
 
        //The set of the animator parametrs
-       anim.SetBool("Walk",horizontal !=0);
+       anim.SetBool("walk",horizontal !=0);
        anim.SetBool("grounded",grounded);
    }
 
