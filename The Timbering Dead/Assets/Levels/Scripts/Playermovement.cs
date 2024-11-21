@@ -51,7 +51,7 @@ public class NewBehaviourScript : MonoBehaviour
     // Move the player
     rb.velocity = new UnityEngine.Vector2(horizontal * speed, rb.velocity.y);
    }
-
+// check if the player is grounded
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
@@ -82,4 +82,5 @@ public class NewBehaviourScript : MonoBehaviour
     if(collision.gameObject.tag =="Ground")
     grounded = true;
    }
+   
 }
