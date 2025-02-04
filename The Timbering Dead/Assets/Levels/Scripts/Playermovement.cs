@@ -7,7 +7,7 @@ public class NewBehaviourScript : MonoBehaviour
 {
     private float horizontal;
     private float speed = 8f;
-    private float jumpForce = 16f;
+    private float jumpForce = 15f;
     private bool isFacingRight = true;
     private bool grounded;
     
