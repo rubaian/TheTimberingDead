@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.Scripting;
+using UnityEngine.Windows;
 
 public class Health : MonoBehaviour
 {
@@ -33,5 +34,10 @@ public class Health : MonoBehaviour
             
 
         }
+    }
+    private void Update()
+    {
+        if (UnityEngine.Input.GetKeyDown(KeyCode.E))
+        TakeDamage(1);
     }
 }
