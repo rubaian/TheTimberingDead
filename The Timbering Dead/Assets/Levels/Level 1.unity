@@ -214,7 +214,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 10569163}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -238,7 +238,7 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -790,9 +790,9 @@ GameObject:
   - component: {fileID: 93655139}
   - component: {fileID: 93655140}
   - component: {fileID: 93655141}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (11)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -871,7 +871,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93655138}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1006,7 +1006,7 @@ GameObject:
   - component: {fileID: 129783096}
   m_Layer: 0
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (14)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1085,7 +1085,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129783093}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -2248,7 +2248,7 @@ Transform:
   m_GameObject: {fileID: 314756496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 24.29, y: 0.43, z: 0}
+  m_LocalPosition: {x: 24.29, y: 0.05, z: 0}
   m_LocalScale: {x: 1.1651, y: 0.9917, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2261,7 +2261,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 314756496}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -2728,7 +2728,7 @@ Transform:
   m_GameObject: {fileID: 436816260}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 24.1753, y: 6.5884, z: 0}
+  m_LocalPosition: {x: 24.1753, y: 6.33, z: 0}
   m_LocalScale: {x: 1.8388394, y: 2.9044359, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2745,12 +2745,12 @@ GameObject:
   - component: {fileID: 445964970}
   - component: {fileID: 445964971}
   - component: {fileID: 445964972}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (9)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &445964970
 Transform:
@@ -2826,7 +2826,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445964969}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -3147,8 +3147,8 @@ Transform:
   m_GameObject: {fileID: 474697544}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.86, y: -4.11, z: 0}
-  m_LocalScale: {x: 26.1752, y: 2.343926, z: 1}
+  m_LocalPosition: {x: 0.8938, y: -4.11, z: 0}
+  m_LocalScale: {x: 26.243254, y: 2.343926, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 516635523}
@@ -3231,7 +3231,7 @@ Transform:
   m_GameObject: {fileID: 499749101}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26.34, y: 2.37, z: 0}
+  m_LocalPosition: {x: 26.34, y: 2.12, z: 0}
   m_LocalScale: {x: 0.7110797, y: 1.4735621, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3825,9 +3825,9 @@ GameObject:
   - component: {fileID: 526581052}
   - component: {fileID: 526581053}
   - component: {fileID: 526581054}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (5)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3906,7 +3906,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526581051}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -4427,9 +4427,9 @@ GameObject:
   - component: {fileID: 576635508}
   - component: {fileID: 576635509}
   - component: {fileID: 576635510}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (6)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4443,7 +4443,7 @@ Transform:
   m_GameObject: {fileID: 576635507}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.329, y: 4.731, z: 0}
+  m_LocalPosition: {x: 43.28, y: 4.731, z: 0}
   m_LocalScale: {x: 0.45780846, y: 0.7641116, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4508,7 +4508,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 576635507}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -5659,7 +5659,7 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -6056,7 +6056,7 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -6104,10 +6104,10 @@ PolygonCollider2D:
       - {x: 1.76, y: 0.48}
       - {x: 1.43, y: 0.48}
       - {x: 1.36, y: 0.51}
-      - {x: 1.06, y: 0.45999998}
+      - {x: 1.2518, y: 0.41860622}
       - {x: 0.90999997, y: 0.47}
-      - {x: 0.79999995, y: 0.48}
-      - {x: 0.69, y: 0.42999998}
+      - {x: 0.84794986, y: 0.397212}
+      - {x: 0.7619254, y: 0.347212}
       - {x: 0.45999998, y: 0.38}
       - {x: 0.28, y: 0.39999998}
       - {x: -0.089999996, y: 0.41}
@@ -6977,9 +6977,9 @@ GameObject:
   - component: {fileID: 1074781319}
   - component: {fileID: 1074781320}
   - component: {fileID: 1074781321}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (8)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7058,7 +7058,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1074781318}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -7709,7 +7709,7 @@ Transform:
   m_GameObject: {fileID: 1237798653}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.05, y: 0.4, z: 0}
+  m_LocalPosition: {x: 17.05, y: 0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7722,7 +7722,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237798653}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -7854,9 +7854,9 @@ GameObject:
   - component: {fileID: 1240511460}
   - component: {fileID: 1240511461}
   - component: {fileID: 1240511462}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (18)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7935,7 +7935,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240511459}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -8968,9 +8968,9 @@ GameObject:
   - component: {fileID: 1373729794}
   - component: {fileID: 1373729795}
   - component: {fileID: 1373729796}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (12)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9049,7 +9049,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373729793}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -9396,9 +9396,9 @@ GameObject:
   - component: {fileID: 1386408624}
   - component: {fileID: 1386408625}
   - component: {fileID: 1386408626}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (16)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9477,7 +9477,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386408623}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -10067,7 +10067,7 @@ Transform:
   m_GameObject: {fileID: 1406790745}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.28, y: -1.8324, z: 0}
+  m_LocalPosition: {x: 20.28, y: -2.08, z: 0}
   m_LocalScale: {x: 0.7110797, y: 1.4735621, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10466,9 +10466,9 @@ GameObject:
   - component: {fileID: 1452299778}
   - component: {fileID: 1452299779}
   - component: {fileID: 1452299780}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (15)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10859,9 +10859,9 @@ GameObject:
   - component: {fileID: 1497295965}
   - component: {fileID: 1497295966}
   - component: {fileID: 1497295967}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (17)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10940,7 +10940,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1497295964}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -11501,9 +11501,9 @@ GameObject:
   - component: {fileID: 1617291289}
   - component: {fileID: 1617291290}
   - component: {fileID: 1617291291}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (10)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11582,7 +11582,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617291288}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -12172,7 +12172,7 @@ Transform:
   m_GameObject: {fileID: 1702577541}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.578, y: 1.6187, z: 0}
+  m_LocalPosition: {x: 25.578, y: 1.32, z: 0}
   m_LocalScale: {x: 2.5870683, y: 0.03357433, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12302,7 +12302,7 @@ Transform:
   m_GameObject: {fileID: 1721070738}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 22.6103, y: 0.51, z: 0}
+  m_LocalPosition: {x: 22.6103, y: 0.26, z: 0}
   m_LocalScale: {x: 1.7651616, y: 0.08257806, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12533,9 +12533,9 @@ GameObject:
   - component: {fileID: 1793199409}
   - component: {fileID: 1793199410}
   - component: {fileID: 1793199411}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (13)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12614,7 +12614,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793199408}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -13083,9 +13083,9 @@ GameObject:
   - component: {fileID: 1832178406}
   - component: {fileID: 1832178407}
   - component: {fileID: 1832178408}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u0639\u0634\u0628 \u0627\u0631\u0636\u064A (7)"
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13164,7 +13164,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1832178405}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
