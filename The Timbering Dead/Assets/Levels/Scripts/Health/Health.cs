@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.Windows;
@@ -52,5 +53,10 @@ public class Health : MonoBehaviour
     {
         if (UnityEngine.Input.GetKeyDown(KeyCode.E))
         TakeDamage(1);
+    }
+
+    internal void Respawn()
+    {
+        throw new NotImplementedException();
     }
 }

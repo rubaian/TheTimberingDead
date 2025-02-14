@@ -1,6 +1,7 @@
 using UnityEngine;
 public class Camera : MonoBehaviour
 {
+    internal static object main;
     [SerializeField] private float speed;
     private UnityEngine.Vector3 velocity=UnityEngine.Vector3.zero;
     [SerializeField] private Transform player;
