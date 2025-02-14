@@ -26,11 +26,24 @@ public class Health : MonoBehaviour
         else
         {
             if (!dead)
-            {
-                anim.SetTrigger("die");
-                GetComponent<NewBehaviourScript>().enabled = false;
-                dead=true;
-            }
+    {
+        
+        anim.SetTrigger("die");
+
+        
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            
+            rb.velocity = Vector3.zero;  
+            rb.angularVelocity = Vector3.zero;  
+            rb.isKinematic = true;  
+        }
+
+        GetComponent<NewBehaviourScript>().enabled = false;  
+
+        dead = true;
+    }
             
 
         }
