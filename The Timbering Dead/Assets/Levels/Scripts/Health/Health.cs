@@ -1,8 +1,5 @@
-
 using System;
 using UnityEngine;
-using UnityEngine.Scripting;
-using UnityEngine.Windows;
 
 public class Health : MonoBehaviour
 {
@@ -10,49 +7,64 @@ public class Health : MonoBehaviour
     public float currentHealth;
     private Animator anim;
     private bool dead;
+    
+    // Reference to UIManager
+    [SerializeField] private UIManager uiManager;
 
     private void Awake()
     {
-        currentHealth=startingHealth;
-        anim=GetComponent<Animator>();
+        currentHealth = startingHealth;
+        anim = GetComponent<Animator>();
     }
-    public void TakeDamage(float _damage)
+
+    public void TakeDamage(float damage)
     {
-        currentHealth = Mathf.Clamp(currentHealth - _damage,0,startingHealth);
-        
-        if(currentHealth>0)
+        if (dead) return; // Prevent taking damage after death
+
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, startingHealth);
+
+        if (currentHealth <= 0)
         {
-            anim.SetTrigger("hurt");
+            Die();
         }
-        else
-        {
-            if (!dead)
+    }
+
+    private void Die()
     {
-        
+        if (dead) return; // Prevent multiple calls to Die()
+
+        dead = true; // Mark as dead
+
         anim.SetTrigger("die");
 
-        
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            
             rb.velocity = Vector3.zero;  
             rb.angularVelocity = Vector3.zero;  
             rb.isKinematic = true;  
         }
 
-        GetComponent<NewBehaviourScript>().enabled = false;  
+        // Disable the movement script (replace "Playermovement" if you use a different script for player movement)
+        Playermovement movementScript = GetComponent<Playermovement>();
+        if (movementScript != null)
+        {
+            movementScript.enabled = false;
+        }
 
-        dead = true;
-    }
-            
-
+        // Call GameOver method to show the game over screen
+        if (uiManager != null)
+        {
+            uiManager.GameOver();
         }
     }
+
     private void Update()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.E))
-        TakeDamage(1);
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            TakeDamage(1);
+        }
     }
 
     internal void Respawn()
