@@ -2,57 +2,55 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private float attackCooldown;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject[] fireballs;
+    [SerializeField] private float attackCooldown;  // Time between consecutive attacks
+    [SerializeField] private Transform attackPoint;  // Attack point (where the sword hits)
+    [SerializeField] private float attackRange = 0.5f;  // Range of the attack (how far it reaches)
+    [SerializeField] private LayerMask enemyLayer;  // The layer the enemies (zombies) belong to
 
     private Animator anim;
     private Playermovement playerMovement;
-    private float cooldownTimer = Mathf.Infinity;
+    private float cooldownTimer = Mathf.Infinity;  // Timer for cooldown between attacks
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
-        playerMovement = GetComponent<Playermovement>();
+        anim = GetComponent<Animator>();  // Get the animator attached to the player
+        playerMovement = GetComponent<Playermovement>();  // Get the player movement script
     }
 
     private void Update()
     {
+        // If the attack button is pressed and cooldown is over and the player can attack
         if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown && playerMovement.canAttack())
-            Attack();
+            Attack();  // Perform attack
 
-        cooldownTimer += Time.deltaTime;
+        cooldownTimer += Time.deltaTime;  // Increase cooldown timer over time
     }
 
     private void Attack()
     {
-        anim.SetTrigger("L Attack");
-        cooldownTimer = 0;
+        anim.SetTrigger("L Attack");  // Play the attack animation trigger
+        cooldownTimer = 0;  // Reset the cooldown timer
 
-        // Get the next available fireball and spawn it
-        GameObject fireball = fireballs[FindFireball()];
-        fireball.transform.position = firePoint.position;
-        fireball.SetActive(true);  // Make sure the fireball is active
+        // Find all enemies within the attack range
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
-        // If you don't want to use the Projectile component, you can manually move the fireball here:
-        // Fireball movement code, for example, just moving the fireball in one direction:
-        Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        foreach (Collider2D enemy in enemiesToDamage)
         {
-            float direction = Mathf.Sign(transform.localScale.x);  // Get the direction based on player facing
-            rb.velocity = new Vector2(direction * 10f, 0);  // Example speed of 10 units per second
+            if (enemy != null)
+            {
+                // Apply damage to the enemy (zombie)
+                enemy.GetComponent<Health>().TakeDamage(1);  // Apply 1 damage (adjust value as needed)
+            }
         }
     }
 
-    private int FindFireball()
+    // Visualize the attack range in the editor when selected
+    private void OnDrawGizmosSelected()
     {
-        for (int i = 0; i < fireballs.Length; i++)
-        {
-            if (!fireballs[i].activeInHierarchy)
-                return i;
-        }
-        return 0;
-    }
+        if (attackPoint == null)
+            return;
 
-    
+        // Draw a wireframe circle to represent the attack range
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
 }

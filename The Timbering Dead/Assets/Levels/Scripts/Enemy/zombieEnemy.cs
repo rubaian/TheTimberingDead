@@ -7,10 +7,10 @@ public class MeleeEnemy : MonoBehaviour
     [SerializeField] private float attackCooldown;
     [SerializeField] private float range;
     [SerializeField] private int damage;
-    
+
     [Header("Health Parameters")]
-    [SerializeField] private int maxHealth = 100; // أقصى صحة للعدو
-    private int currentHealth; // صحة العدو الحالية
+    [SerializeField] private int maxHealth = 100; // Max health of the enemy
+    private int currentHealth; // Current health of the enemy
 
     [Header("Collider Parameters")]
     [SerializeField] private float colliderDistance;
@@ -18,37 +18,43 @@ public class MeleeEnemy : MonoBehaviour
 
     [Header("Player Layer")]
     [SerializeField] private LayerMask playerLayer;
-    
+
     [Header("Fade Settings")]
-    [SerializeField] private float fadeDuration = 2f; // مدة التلاشي
-    
+    [SerializeField] private float fadeDuration = 2f; // Duration of the fade out effect
+
     private float cooldownTimer = Mathf.Infinity;
     private Animator anim;
     private Health playerHealth;
-    private SpriteRenderer rend; // استبدال Renderer بـ SpriteRenderer
+    private SpriteRenderer rend; // Replacing Renderer with SpriteRenderer
     private bool isDead = false;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         rend = GetComponent<SpriteRenderer>();
-        currentHealth = maxHealth; // ضبط الصحة عند بداية اللعبة
+        currentHealth = maxHealth; // Set health when the game starts
     }
 
     private void Update()
     {
-        if (isDead) return; // لا تفعل شيئًا إذا مات العدو
+        if (isDead) return; // Do nothing if the enemy is dead
 
         cooldownTimer += Time.deltaTime;
 
-        // الهجوم فقط عندما يكون اللاعب في النطاق
+        // Attack only when the player is in sight
         if (PlayerInSight())
         {
             if (cooldownTimer >= attackCooldown)
             {
                 cooldownTimer = 0;
                 anim.SetTrigger("Attack");
+                DamagePlayer(); // Call this to apply damage when attacking
             }
+        }
+        else
+        {
+            // Return to idle when not attacking
+            anim.SetTrigger("Idle");
         }
     }
 
@@ -86,7 +92,7 @@ public class MeleeEnemy : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
-        if (isDead) return; // لا تأخذ ضرر بعد الموت
+        if (isDead) return; // Do not take damage after death
 
         currentHealth -= damageAmount;
 
@@ -99,18 +105,20 @@ public class MeleeEnemy : MonoBehaviour
     void Die()
     {
         isDead = true;
-        anim.SetTrigger("die"); // تشغيل أنيميشن الموت
-        boxCollider.enabled = false; // تعطيل الكوليدر حتى لا يتفاعل مع العالم
+        anim.SetTrigger("Die"); // Play death animation
+        boxCollider.enabled = false; // Disable the collider so it no longer interacts with the world
 
         StartCoroutine(FadeOutAndDestroy());
     }
 
+    // Coroutine to fade the enemy out and destroy the gameObject
     IEnumerator FadeOutAndDestroy()
     {
         Color color = rend.color;
         float startAlpha = color.a;
         float elapsedTime = 0f;
 
+        // Gradually decrease the alpha value to make the enemy fade out
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -119,6 +127,6 @@ public class MeleeEnemy : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject); // حذف العدو بعد الاختفاء
+        Destroy(gameObject); // Destroy the enemy after fading out
     }
 }

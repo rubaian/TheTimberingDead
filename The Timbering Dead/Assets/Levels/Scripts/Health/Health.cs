@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            Die();  // Call Die() if health is 0 or below
         }
     }
 
@@ -35,17 +35,9 @@ public class Health : MonoBehaviour
 
         dead = true; // Mark as dead
 
-        anim.SetTrigger("die");
+        anim.SetTrigger("die"); // Trigger the die animation
 
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.velocity = Vector3.zero;  
-            rb.angularVelocity = Vector3.zero;  
-            rb.isKinematic = true;  
-        }
-
-        // Disable the movement script (replace "Playermovement" if you use a different script for player movement)
+        // Disable player movement script to stop moving after death
         Playermovement movementScript = GetComponent<Playermovement>();
         if (movementScript != null)
         {
@@ -55,13 +47,22 @@ public class Health : MonoBehaviour
         // Call GameOver method to show the game over screen
         if (uiManager != null)
         {
-            uiManager.GameOver();
+            uiManager.GameOver(); // Ensure the game over screen is activated
+        }
+
+        // If you need to stop the rigidbody movement, you can do this:
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;  
+            rb.angularVelocity = Vector3.zero;  
+            rb.isKinematic = true;  
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E)) // Just for testing damage
         {
             TakeDamage(1);
         }
