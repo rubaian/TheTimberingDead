@@ -2,90 +2,141 @@ using UnityEngine;
 
 public class ZombieEnemy : MonoBehaviour
 {
-    [Header("Attack Parameters")]
-    [SerializeField] private float attackCooldown = 1f; // Time between each attack
-    [SerializeField] private float range = 1f; // Attack range
-    [SerializeField] private int damage = 1; // Damage dealt by the zombie
+    [Header("Movement Settings")]
+    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float patrolDistance = 3f;
+    [SerializeField] private float wallCheckDistance = 0.5f;
 
-    [Header("Collider Parameters")]
-    [SerializeField] private BoxCollider2D boxCollider; // Zombie's collider
-    [SerializeField] private float colliderDistance; // Distance to extend the BoxCast range
+    [Header("Attack Settings")]
+    [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float attackRangeWidth = 1.5f; // عرض منطقة الهجوم
+    [SerializeField] private float attackRangeHeight = 0.8f; // طول منطقة الهجوم
+    [SerializeField] private int damage = 1;
+    [SerializeField] private float attackDelay = 0.3f;
 
-    [Header("Player Layer")]
-    [SerializeField] private LayerMask playerLayer; // Layer for the player
+    [Header("References")]
+    [SerializeField] private BoxCollider2D attackCollider;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask obstacleLayer;
 
-    private float cooldownTimer = Mathf.Infinity; // Timer to track the cooldown between attacks
-    private bool hasAttacked = false; // Flag to track if the zombie has already attacked
-    private bool isAttacking = false; // Flag to track if the zombie is in attack animation
-
-    // References
-    private Animator anim; // Animator for the zombie
-    private Health playerHealth; // Reference to the player's health
+    private float leftBoundary;
+    private float rightBoundary;
+    private bool movingRight = true;
+    private float cooldownTimer;
+    private bool isAttacking;
+    private bool hasAttacked; // إضافة متغير لتتبع حالة الهجوم
+    private Animator anim;
+    private Rigidbody2D rb;
+    private Health playerHealth;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
 
-        // Ensure boxCollider is assigned in the inspector
-        if (boxCollider == null)
-            boxCollider = GetComponent<BoxCollider2D>();
+        // تعيين حدود الحراسة
+        leftBoundary = transform.position.x - patrolDistance;
+        rightBoundary = transform.position.x + patrolDistance;
     }
 
     private void Update()
     {
-        cooldownTimer += Time.deltaTime; // Increment the cooldown timer
+        if (!isAttacking) Patrol();
+        cooldownTimer += Time.deltaTime;
 
-        // Check if player is in range and cooldown has passed, and is not already attacking
+        // التحقق من التبريد وحالة الهجوم
         if (PlayerInSight() && cooldownTimer >= attackCooldown && !hasAttacked)
+            StartAttack();
+    }
+
+    private void StartAttack()
+    {
+        cooldownTimer = 0;
+        hasAttacked = true; // تعيين حالة الهجوم
+        isAttacking = true;
+        anim.SetTrigger("attack");
+        rb.velocity = Vector2.zero;
+        Invoke(nameof(ApplyDamage), attackDelay);
+    }
+
+    private void ApplyDamage()
+    {
+        if (PlayerInSight() && playerHealth != null && !playerHealth.IsInvincible())
+            playerHealth.TakeDamage(damage);
+    }
+
+    private void Patrol()
+    {
+        if (isAttacking) return;
+
+        Vector2 dir = movingRight ? Vector2.right : Vector2.left;
+        RaycastHit2D hit = Physics2D.Raycast(
+            attackCollider.bounds.center, 
+            dir, 
+            wallCheckDistance, 
+            obstacleLayer
+        );
+
+        if (hit.collider != null)
         {
-            cooldownTimer = 0; // Reset cooldown timer
-            hasAttacked = true; // Set the flag to prevent further attacks until cooldown
-            anim.SetTrigger("attack"); // Trigger attack animation
-            isAttacking = true; // Mark that the zombie is attacking
+            Flip();
+            return;
         }
-        else if (cooldownTimer >= attackCooldown)
-        {
-            hasAttacked = false; // Reset the attack flag once cooldown has passed
-        }
+
+        rb.velocity = new Vector2(movingRight ? moveSpeed : -moveSpeed, rb.velocity.y);
+        anim.SetBool("moving", true);
+
+        if ((movingRight && transform.position.x >= rightBoundary) ||
+            (!movingRight && transform.position.x <= leftBoundary))
+            Flip();
+    }
+
+    private void Flip()
+    {
+        movingRight = !movingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
     private bool PlayerInSight()
     {
-        // BoxCast to detect if the player is within range
+        if (attackCollider == null) return false;
+
+        Vector2 dir = movingRight ? Vector2.right : Vector2.left;
         RaycastHit2D hit = Physics2D.BoxCast(
-            (Vector2)boxCollider.bounds.center + new Vector2(transform.right.x * range, 0), // Ensure this is a Vector2
-            new Vector2(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y), 
-            0, Vector2.left, 0, playerLayer);
+            attackCollider.bounds.center,
+            new Vector2(attackRangeWidth, attackRangeHeight), // استخدام الطول والعرض الجديدين
+            0f,
+            dir,
+            0f,
+            playerLayer
+        );
 
         if (hit.collider != null)
-        {
-            playerHealth = hit.transform.GetComponent<Health>(); // Set the player's health
-            return true; // Player is in range
-        }
-        return false; // No player detected
+            playerHealth = hit.transform.GetComponent<Health>();
+
+        return hit.collider != null;
     }
 
-    private void DamagePlayer()
-    {
-        if (isAttacking && playerHealth != null)
-        {
-            playerHealth.TakeDamage(damage); // Apply damage to the player
-            Debug.Log("Damage applied to player. Current health: " + playerHealth.currentHealth); // Log damage
-        }
-    }
-
-    // This method will be triggered by the attack animation event in the Animator
     public void OnAttackEnd()
     {
-        isAttacking = false; // Reset the attack state once the attack animation ends
-        hasAttacked = false; // Reset the flag to allow the next attack
+        isAttacking = false;
+        hasAttacked = false; // إعادة تعيين حالة الهجوم
+        cooldownTimer = 0; // إعادة تعيين مؤقت التبريد
+
+        // استئناف الحركة
+        Patrol();
+        rb.velocity = new Vector2(movingRight ? moveSpeed : -moveSpeed, 0);
     }
 
     private void OnDrawGizmos()
     {
-        // Draw a wireframe box in the scene view to visualize attack range
+        if (attackCollider == null) return;
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube((Vector2)boxCollider.bounds.center + new Vector2(transform.right.x * range, 0), 
-            new Vector2(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y));
+        Vector2 dir = movingRight ? Vector2.right : Vector2.left;
+        Vector3 center = attackCollider.bounds.center + (Vector3)(dir * attackRangeWidth * 0.5f);
+        Gizmos.DrawWireCube(center, new Vector2(attackRangeWidth, attackRangeHeight)); // استخدام الطول والعرض الجديدين
     }
 }

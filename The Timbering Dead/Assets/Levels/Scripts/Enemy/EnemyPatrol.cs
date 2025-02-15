@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    [Header ("Patrol Points")]
+    [Header("Patrol Points")]
     [SerializeField] private Transform leftEdge;
     [SerializeField] private Transform rightEdge;
 
@@ -21,10 +21,13 @@ public class EnemyPatrol : MonoBehaviour
     [Header("Enemy Animator")]
     [SerializeField] private Animator anim;
 
+    private bool isAttacking = false; // Flag to track if the zombie is attacking
+
     private void Awake()
     {
         initScale = enemy.localScale;
     }
+
     private void OnDisable()
     {
         anim.SetBool("moving", false);
@@ -32,6 +35,8 @@ public class EnemyPatrol : MonoBehaviour
 
     private void Update()
     {
+        if (isAttacking) return; // Stop movement if attacking
+
         if (movingLeft)
         {
             if (enemy.position.x >= leftEdge.position.x)
@@ -53,7 +58,7 @@ public class EnemyPatrol : MonoBehaviour
         anim.SetBool("moving", false);
         idleTimer += Time.deltaTime;
 
-        if(idleTimer > idleDuration)
+        if (idleTimer > idleDuration)
             movingLeft = !movingLeft;
     }
 
@@ -62,12 +67,26 @@ public class EnemyPatrol : MonoBehaviour
         idleTimer = 0;
         anim.SetBool("moving", true);
 
-        //Make enemy face direction
+        // Make enemy face direction
         enemy.localScale = new Vector3(Mathf.Abs(initScale.x) * _direction,
             initScale.y, initScale.z);
 
-        //Move in that direction
+        // Move in that direction
         enemy.position = new Vector3(enemy.position.x + Time.deltaTime * _direction * speed,
             enemy.position.y, enemy.position.z);
+    }
+
+    // Method to stop movement during attack
+    public void StartAttack()
+    {
+        isAttacking = true;
+        anim.SetBool("moving", false); // Stop moving animation
+    }
+
+    // Method to resume movement after attack
+    public void EndAttack()
+    {
+        isAttacking = false;
+        anim.SetBool("moving", true); // Resume moving animation
     }
 }

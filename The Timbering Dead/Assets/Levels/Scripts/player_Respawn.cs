@@ -17,7 +17,7 @@ public class PlayerRespawn : MonoBehaviour
     {
         if (playerHealth != null)
         {
-            playerHealth.ResetHealth();  // Restore player health to full
+            playerHealth.Respawn();  // Restore player health to full
         }
 
         transform.position = spawnPoint;  // Move player back to the spawn point

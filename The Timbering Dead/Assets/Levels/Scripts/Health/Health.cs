@@ -1,89 +1,94 @@
 using UnityEngine;
+using System.Collections;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float startingHealth = 3f;  // Default starting health
-    public float currentHealth;
-    private Animator anim;
-    private bool isDead;
+    [Header("Health Settings")]
+    [SerializeField] private float maxHealth = 3f;
+    [SerializeField] private float invincibilityTime = 1f;
+    [SerializeField] private float blinkInterval = 0.1f;
 
-    // Reference to UIManager for Game Over screen
+    [Header("References")]
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private SpriteRenderer sprite;
 
-    private Playermovement movementScript;
+    public float currentHealth { get; private set; }
+    private bool isDead;
+    private bool isInvincible;
+    private Animator anim;
     private Rigidbody2D rb;
+    private Playermovement movement;
 
     private void Awake()
     {
-        currentHealth = startingHealth;
+        currentHealth = maxHealth;
         anim = GetComponent<Animator>();
-        movementScript = GetComponent<Playermovement>();  // Get movement script
-        rb = GetComponent<Rigidbody2D>();  // Get the Rigidbody2D
+        rb = GetComponent<Rigidbody2D>();
+        movement = GetComponent<Playermovement>();
     }
 
-    // Take damage and handle death
     public void TakeDamage(float damage)
-{
-    if (isDead) return; // Prevent taking damage after death
-
-    // Apply damage and log the health values before and after damage
-    Debug.Log("Health before damage: " + currentHealth);
-    currentHealth = Mathf.Clamp(currentHealth - damage, 0, startingHealth);
-    Debug.Log("Damage taken! Current health: " + currentHealth);
-
-    if (currentHealth <= 0)
     {
-        Die();  // Call Die() if health reaches 0
-    }
-}
+        if (isDead || isInvincible) return;
 
-    // Handle death: Disable movement, play die animation, and show Game Over
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        StartCoroutine(InvincibilityRoutine());
+
+        if (currentHealth <= 0) Die();
+    }
+
+    private IEnumerator InvincibilityRoutine()
+    {
+        isInvincible = true;
+        float timer = 0;
+
+        while (timer < invincibilityTime)
+        {
+            sprite.color = new Color(1, 1, 1, 0.5f);
+            yield return new WaitForSeconds(blinkInterval);
+            sprite.color = Color.white;
+            yield return new WaitForSeconds(blinkInterval);
+            timer += blinkInterval * 2;
+        }
+
+        isInvincible = false;
+    }
+
+    public bool IsInvincible() => isInvincible;
+
     private void Die()
     {
-        if (isDead) return;  // Prevent calling Die() multiple times
+        if (isDead) return;
 
-        isDead = true;  // Mark as dead
-        anim.SetTrigger("die");  // Play die animation
-
-        // Disable movement
-        if (movementScript != null)
-        {
-            movementScript.enabled = false;
-        }
-
-        // Call GameOver method in UIManager
-        if (uiManager != null)
-        {
-            uiManager.GameOver();
-        }
-
-        // Stop Rigidbody movement if necessary
+        isDead = true;
+        anim.SetTrigger("die");
+        movement.enabled = false;
+        
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;  
-            rb.angularVelocity = 0f;  // Fix the error, angularVelocity should be a float
-
-            rb.isKinematic = true;  // Make the Rigidbody non-interactive
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+            rb.isKinematic = true;
         }
+
+        GetComponent<Collider2D>().enabled = false;
+        uiManager?.GameOver();
     }
 
-    // Reset health when the player respawns
-    public void ResetHealth()
+    public void Respawn()
     {
-        currentHealth = startingHealth;  // Reset health to full
-        isDead = false;  // Mark the player as alive
-        anim.ResetTrigger("die");  // Reset die animation trigger
-
-        // Re-enable movement after respawn
-        if (movementScript != null)
-        {
-            movementScript.enabled = true;
-        }
-
-        // Re-enable Rigidbody if necessary
+        currentHealth = maxHealth;
+        isDead = false;
+        movement.enabled = true;
+        sprite.color = Color.white;
+        
         if (rb != null)
         {
             rb.isKinematic = false;
+            rb.gravityScale = 1;
         }
+
+        GetComponent<Collider2D>().enabled = true;
+        anim.ResetTrigger("die");
     }
 }
