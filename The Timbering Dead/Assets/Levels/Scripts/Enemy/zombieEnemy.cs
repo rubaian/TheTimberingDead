@@ -1,124 +1,140 @@
 using System.Collections;
 using UnityEngine;
 
-public class MeleeEnemy : MonoBehaviour
+public class zombieEnemy : MonoBehaviour
 {
+    [Header("Movement Parameters")]
+    [SerializeField] private float moveSpeed = 2f;  // Speed of movement
+    [SerializeField] private float patrolDistance = 5f; // Distance to move left and right
+    private float leftBoundary;
+    private float rightBoundary;
+    private bool movingRight = true;
+    
     [Header("Attack Parameters")]
-    [SerializeField] private float attackCooldown;
-    [SerializeField] private float range;
-    [SerializeField] private int damage;
-
-    [Header("Health Parameters")]
-    [SerializeField] private int maxHealth = 100; // Max health of the enemy
-    private int currentHealth; // Current health of the enemy
-
-    [Header("Collider Parameters")]
-    [SerializeField] private float colliderDistance;
+    [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float attackRange = 1f;
+    [SerializeField] private int damage = 10;
+    
+    [Header("Components")]
     [SerializeField] private BoxCollider2D boxCollider;
-
-    [Header("Player Layer")]
     [SerializeField] private LayerMask playerLayer;
-
-    [Header("Fade Settings")]
-    [SerializeField] private float fadeDuration = 2f; // Duration of the fade out effect
-
-    private float cooldownTimer = Mathf.Infinity;
+    private Rigidbody2D rb;
     private Animator anim;
-    private Health playerHealth;
-    private SpriteRenderer rend; // Replacing Renderer with SpriteRenderer
     private bool isDead = false;
+    private float cooldownTimer = Mathf.Infinity;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        rend = GetComponent<SpriteRenderer>();
-        currentHealth = maxHealth; // Set health when the game starts
+        rb = GetComponent<Rigidbody2D>();
+        
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0; // Prevent falling
+            rb.freezeRotation = true; // Prevent rotation
+        }
+
+        // Set patrol boundaries based on start position
+        leftBoundary = transform.position.x - patrolDistance;
+        rightBoundary = transform.position.x + patrolDistance;
     }
 
     private void Update()
     {
-        if (isDead) return; // Do nothing if the enemy is dead
+        if (isDead) return; // Stop movement if dead
 
         cooldownTimer += Time.deltaTime;
 
-        // Attack only when the player is in sight
-        if (PlayerInSight())
+        Patrol(); // Move left and right
+
+        if (PlayerInSight() && cooldownTimer >= attackCooldown)
         {
-            if (cooldownTimer >= attackCooldown)
+            cooldownTimer = 0;
+            anim.SetTrigger("attack"); // Trigger attack animation
+            Debug.Log("Attack triggered!"); // Add this line for debugging
+            DamagePlayer();
+        }
+    }
+
+    private void Patrol()
+    {
+        if (movingRight)
+        {
+            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
+            anim.SetBool("moving", true); // Set moving animation
+
+            if (transform.position.x >= rightBoundary)
             {
-                cooldownTimer = 0;
-                anim.SetTrigger("Attack");
-                DamagePlayer(); // Call this to apply damage when attacking
+                Flip();
+                movingRight = false;
             }
         }
         else
         {
-            // Return to idle when not attacking
-            anim.SetTrigger("Idle");
+            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+            anim.SetBool("moving", true); // Set moving animation
+
+            if (transform.position.x <= leftBoundary)
+            {
+                Flip();
+                movingRight = true;
+            }
         }
+    }
+
+    private void Flip()
+    {
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
     private bool PlayerInSight()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(
-            boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
-            0,
-            Vector2.left,
-            0,
-            playerLayer
-        );
+        Vector2 rayOrigin = boxCollider.bounds.center;
+        Vector2 rayDirection = movingRight ? Vector2.right : Vector2.left;
 
-        if (hit.collider != null)
-            playerHealth = hit.transform.GetComponent<Health>();
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, attackRange, playerLayer);
+
+        Debug.DrawRay(rayOrigin, rayDirection * attackRange, Color.red); // Draw a red line to visualize the attack range
 
         return hit.collider != null;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(
-            boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z)
-        );
-    }
-
     private void DamagePlayer()
     {
-        if (PlayerInSight() && playerHealth != null)
-            playerHealth.TakeDamage(damage);
-    }
+        Vector2 rayOrigin = boxCollider.bounds.center;
+        Vector2 rayDirection = movingRight ? Vector2.right : Vector2.left;
 
-    public void TakeDamage(int damageAmount)
-    {
-        if (isDead) return; // Do not take damage after death
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, attackRange, playerLayer);
 
-        currentHealth -= damageAmount;
-
-        if (currentHealth <= 0)
+        if (hit.collider != null)
         {
-            Die();
+            Health playerHealth = hit.transform.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage);
+                Debug.Log("Player hit!"); // Add this line for debugging
+            }
         }
     }
 
-    void Die()
+    public void Die()
     {
         isDead = true;
-        anim.SetTrigger("Die"); // Play death animation
-        boxCollider.enabled = false; // Disable the collider so it no longer interacts with the world
-
+        anim.SetTrigger("die"); // Trigger die animation
+        rb.velocity = Vector2.zero; // Stop movement
+        boxCollider.enabled = false;
         StartCoroutine(FadeOutAndDestroy());
     }
 
-    // Coroutine to fade the enemy out and destroy the gameObject
-    IEnumerator FadeOutAndDestroy()
+    private IEnumerator FadeOutAndDestroy()
     {
+        SpriteRenderer rend = GetComponent<SpriteRenderer>();
         Color color = rend.color;
         float startAlpha = color.a;
         float elapsedTime = 0f;
+        float fadeDuration = 2f;
 
-        // Gradually decrease the alpha value to make the enemy fade out
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -127,6 +143,6 @@ public class MeleeEnemy : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject); // Destroy the enemy after fading out
+        Destroy(gameObject);
     }
 }
