@@ -1,75 +1,89 @@
-using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float startingHealth;
+    [SerializeField] private float startingHealth = 3f;  // Default starting health
     public float currentHealth;
     private Animator anim;
-    private bool dead;
-    
-    // Reference to UIManager
+    private bool isDead;
+
+    // Reference to UIManager for Game Over screen
     [SerializeField] private UIManager uiManager;
+
+    private Playermovement movementScript;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
         currentHealth = startingHealth;
         anim = GetComponent<Animator>();
+        movementScript = GetComponent<Playermovement>();  // Get movement script
+        rb = GetComponent<Rigidbody2D>();  // Get the Rigidbody2D
     }
 
+    // Take damage and handle death
     public void TakeDamage(float damage)
+{
+    if (isDead) return; // Prevent taking damage after death
+
+    // Apply damage and log the health values before and after damage
+    Debug.Log("Health before damage: " + currentHealth);
+    currentHealth = Mathf.Clamp(currentHealth - damage, 0, startingHealth);
+    Debug.Log("Damage taken! Current health: " + currentHealth);
+
+    if (currentHealth <= 0)
     {
-        if (dead) return; // Prevent taking damage after death
-
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, startingHealth);
-
-        if (currentHealth <= 0)
-        {
-            Die();  // Call Die() if health is 0 or below
-        }
+        Die();  // Call Die() if health reaches 0
     }
+}
 
+    // Handle death: Disable movement, play die animation, and show Game Over
     private void Die()
     {
-        if (dead) return; // Prevent multiple calls to Die()
+        if (isDead) return;  // Prevent calling Die() multiple times
 
-        dead = true; // Mark as dead
+        isDead = true;  // Mark as dead
+        anim.SetTrigger("die");  // Play die animation
 
-        anim.SetTrigger("die"); // Trigger the die animation
-
-        // Disable player movement script to stop moving after death
-        Playermovement movementScript = GetComponent<Playermovement>();
+        // Disable movement
         if (movementScript != null)
         {
             movementScript.enabled = false;
         }
 
-        // Call GameOver method to show the game over screen
+        // Call GameOver method in UIManager
         if (uiManager != null)
         {
-            uiManager.GameOver(); // Ensure the game over screen is activated
+            uiManager.GameOver();
         }
 
-        // If you need to stop the rigidbody movement, you can do this:
-        Rigidbody rb = GetComponent<Rigidbody>();
+        // Stop Rigidbody movement if necessary
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;  
-            rb.angularVelocity = Vector3.zero;  
-            rb.isKinematic = true;  
+            rb.velocity = Vector2.zero;  
+            rb.angularVelocity = 0f;  // Fix the error, angularVelocity should be a float
+
+            rb.isKinematic = true;  // Make the Rigidbody non-interactive
         }
     }
 
-    private void Update()
+    // Reset health when the player respawns
+    public void ResetHealth()
     {
-        if (Input.GetKeyDown(KeyCode.E)) // Just for testing damage
+        currentHealth = startingHealth;  // Reset health to full
+        isDead = false;  // Mark the player as alive
+        anim.ResetTrigger("die");  // Reset die animation trigger
+
+        // Re-enable movement after respawn
+        if (movementScript != null)
         {
-            TakeDamage(1);
+            movementScript.enabled = true;
         }
-    }
 
-    internal void Respawn()
-    {
-        throw new NotImplementedException();
+        // Re-enable Rigidbody if necessary
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
     }
 }

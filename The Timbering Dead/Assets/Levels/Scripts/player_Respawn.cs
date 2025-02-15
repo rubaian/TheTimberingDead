@@ -1,10 +1,8 @@
-using NotSlot.HandPainted2D;
 using UnityEngine;
 
 public class PlayerRespawn : MonoBehaviour
 {
-    [SerializeField] private AudioClip checkpoint;
-    private Transform currentCheckpoint;
+    [SerializeField] private Vector2 spawnPoint;  // The initial spawn position
     private Health playerHealth;
     private UIManager uiManager;
 
@@ -12,30 +10,16 @@ public class PlayerRespawn : MonoBehaviour
     {
         playerHealth = GetComponent<Health>();
         uiManager = FindObjectOfType<UIManager>();
+        spawnPoint = transform.position;  // Save the initial position
     }
 
-    public void RespawnCheck()
+    public void Respawn()
     {
-        if (currentCheckpoint == null) 
+        if (playerHealth != null)
         {
-            uiManager.GameOver();
-            return;
+            playerHealth.ResetHealth();  // Restore player health to full
         }
 
-        playerHealth.Respawn(); //Restore player health and reset animation
-        transform.position = currentCheckpoint.position; //Move player to checkpoint location
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Checkpoint")
-        {
-            currentCheckpoint = collision.transform;
-
-            // Disable the checkpoint collider and activate its animation
-            collision.GetComponent<Collider2D>().enabled = false;
-            collision.GetComponent<Animator>().SetTrigger("activate");
-        }
+        transform.position = spawnPoint;  // Move player back to the spawn point
     }
 }
-

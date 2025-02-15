@@ -34,12 +34,19 @@ public class PlayerAttack : MonoBehaviour
         // Find all enemies within the attack range
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
+        Debug.Log("Enemies detected: " + enemiesToDamage.Length); // Debug to check if enemies are detected
+
         foreach (Collider2D enemy in enemiesToDamage)
         {
             if (enemy != null)
             {
                 // Apply damage to the enemy (zombie)
-                enemy.GetComponent<Health>().TakeDamage(1);  // Apply 1 damage (adjust value as needed)
+                Health enemyHealth = enemy.GetComponent<Health>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.TakeDamage(1);  // Apply 1 damage (adjust value as needed)
+                    Debug.Log("Enemy hit: " + enemy.name); // Debug to confirm damage application
+                }
             }
         }
     }
