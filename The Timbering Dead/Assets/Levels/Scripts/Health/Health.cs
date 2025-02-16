@@ -12,6 +12,11 @@ public class Health : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private SpriteRenderer sprite; // Automatically assigned if null
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip takeDamageSound; // Sound when taking damage
+    [SerializeField] private AudioClip deathSound; // Sound when player dies
+    [SerializeField] private AudioClip healSound; // Sound when player heals
+
     public float CurrentHealth { get; private set; }
     public bool IsDead { get; private set; }
     public bool IsInvincible { get; private set; }
@@ -52,6 +57,12 @@ public class Health : MonoBehaviour
 
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, maxHealth);
         StartCoroutine(InvincibilityRoutine());
+
+        // Play take damage sound
+        if (takeDamageSound != null)
+        {
+            SoundsManager.instance.PlaySound(takeDamageSound);
+        }
 
         if (CurrentHealth <= 0) Die();
     }
@@ -99,6 +110,12 @@ public class Health : MonoBehaviour
 
         GetComponent<Collider2D>().enabled = false;
 
+        // Play death sound
+        if (deathSound != null)
+        {
+            SoundsManager.instance.PlaySound(deathSound);
+        }
+
         if (uiManager != null)
         {
             Debug.Log("Game Over function called in UIManager.");
@@ -130,6 +147,13 @@ public class Health : MonoBehaviour
     public void Heal(float amount)
     {
         if (IsDead) return;
+
         CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, maxHealth);
+
+        // Play heal sound
+        if (healSound != null)
+        {
+            SoundsManager.instance.PlaySound(healSound);
+        }
     }
 }
