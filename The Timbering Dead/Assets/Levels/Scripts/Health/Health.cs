@@ -10,23 +10,23 @@ public class Health : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private UIManager uiManager;
-    [SerializeField] private SpriteRenderer sprite; // سيتم تعيينه تلقائيًا إذا كان null
+    [SerializeField] private SpriteRenderer sprite; // Automatically assigned if null
 
-    public float currentHealth { get; private set; }
-    private bool isDead;
-    private bool isInvincible;
+    public float CurrentHealth { get; private set; }
+    public bool IsDead { get; private set; }
+    public bool IsInvincible { get; private set; }
+
     private Animator anim;
     private Rigidbody2D rb;
     private Playermovement movement;
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        CurrentHealth = maxHealth;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<Playermovement>();
 
-        // إذا لم يتم تعيين sprite يدويًا، حاول تعيينه تلقائيًا
         if (sprite == null)
         {
             sprite = GetComponent<SpriteRenderer>();
@@ -35,26 +35,35 @@ public class Health : MonoBehaviour
                 Debug.LogError("SpriteRenderer component is missing on this GameObject.");
             }
         }
+
+        if (uiManager == null)
+        {
+            uiManager = FindObjectOfType<UIManager>();
+            if (uiManager == null)
+            {
+                Debug.LogError("UIManager not found in the scene. Ensure it is added.");
+            }
+        }
     }
 
     public void TakeDamage(float damage)
     {
-        if (isDead || isInvincible) return;
+        if (IsDead || IsInvincible) return;
 
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, maxHealth);
         StartCoroutine(InvincibilityRoutine());
 
-        if (currentHealth <= 0) Die();
+        if (CurrentHealth <= 0) Die();
     }
 
     private IEnumerator InvincibilityRoutine()
     {
-        isInvincible = true;
+        IsInvincible = true;
         float timer = 0;
 
         while (timer < invincibilityTime)
         {
-            if (sprite != null) // تأكد من أن sprite موجود قبل استخدامه
+            if (sprite != null)
             {
                 sprite.color = new Color(1, 1, 1, 0.5f);
                 yield return new WaitForSeconds(blinkInterval);
@@ -69,19 +78,18 @@ public class Health : MonoBehaviour
             }
         }
 
-        isInvincible = false;
+        IsInvincible = false;
     }
-
-    public bool IsInvincible() => isInvincible;
 
     private void Die()
     {
-        if (isDead) return;
+        if (IsDead) return;
 
-        isDead = true;
+        Debug.Log("Player died!"); // Confirm player death
+        IsDead = true;
         anim.SetTrigger("die");
         movement.enabled = false;
-        
+
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
@@ -90,16 +98,25 @@ public class Health : MonoBehaviour
         }
 
         GetComponent<Collider2D>().enabled = false;
-        uiManager?.GameOver();
+
+        if (uiManager != null)
+        {
+            Debug.Log("Game Over function called in UIManager.");
+            uiManager.GameOver(); // Call GameOver() in UIManager
+        }
+        else
+        {
+            Debug.LogError("uiManager is null. Game Over screen will not be displayed.");
+        }
     }
 
     public void Respawn()
     {
-        currentHealth = maxHealth;
-        isDead = false;
+        CurrentHealth = maxHealth;
+        IsDead = false;
         movement.enabled = true;
         if (sprite != null) sprite.color = Color.white;
-        
+
         if (rb != null)
         {
             rb.isKinematic = false;
@@ -108,5 +125,11 @@ public class Health : MonoBehaviour
 
         GetComponent<Collider2D>().enabled = true;
         anim.ResetTrigger("die");
+    }
+
+    public void Heal(float amount)
+    {
+        if (IsDead) return;
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, maxHealth);
     }
 }

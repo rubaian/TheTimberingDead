@@ -8,37 +8,35 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        gameOverScreen.SetActive(false);
+        gameOverScreen.SetActive(false); // Ensure the game over screen is hidden at start
     }
 
-    #region Game Over Functions
-    //Game over function
+    // Activate the game over screen
     public void GameOver()
     {
+        Debug.Log("Game Over screen activated!"); // Confirm game over screen activation
         gameOverScreen.SetActive(true);
-        
     }
 
-    //Restart level
+    // Restart the current level
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    //Activate game over screen
+    // Return to the main menu
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
     }
 
-    //Quit game/exit play mode if in Editor
+    // Quit the game
     public void Quit()
     {
-        Application.Quit(); //Quits the game (only works in build)
+        Application.Quit(); // Quits the game (only works in build)
 
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; //Exits play mode
+        UnityEditor.EditorApplication.isPlaying = false; // Exits play mode in the editor
         #endif
     }
-    #endregion
 }

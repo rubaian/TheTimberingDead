@@ -15,7 +15,6 @@ public class Playermovement : MonoBehaviour
 
     void Start()
     {
-        // References for animator from the object
         anim = GetComponent<Animator>();
     }
 
@@ -32,7 +31,7 @@ public class Playermovement : MonoBehaviour
         // Reduce jump force
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
-            rb.velocity = new UnityEngine.Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
         Flip();
@@ -45,7 +44,7 @@ public class Playermovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Move the player
-        rb.velocity = new UnityEngine.Vector2(horizontal * speed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
     }
 
     // Check if the player is grounded
@@ -60,7 +59,7 @@ public class Playermovement : MonoBehaviour
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
             isFacingRight = !isFacingRight;
-            UnityEngine.Vector3 localScale = transform.localScale;
+            Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
@@ -69,7 +68,7 @@ public class Playermovement : MonoBehaviour
     // Jump animation
     private void Jump()
     {
-        rb.velocity = new UnityEngine.Vector2(rb.velocity.x, jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         anim.SetTrigger("jump");
         grounded = false;
     }
