@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private UIManager uiManager;
-    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private SpriteRenderer sprite; // سيتم تعيينه تلقائيًا إذا كان null
 
     public float currentHealth { get; private set; }
     private bool isDead;
@@ -25,6 +25,16 @@ public class Health : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<Playermovement>();
+
+        // إذا لم يتم تعيين sprite يدويًا، حاول تعيينه تلقائيًا
+        if (sprite == null)
+        {
+            sprite = GetComponent<SpriteRenderer>();
+            if (sprite == null)
+            {
+                Debug.LogError("SpriteRenderer component is missing on this GameObject.");
+            }
+        }
     }
 
     public void TakeDamage(float damage)
@@ -44,11 +54,19 @@ public class Health : MonoBehaviour
 
         while (timer < invincibilityTime)
         {
-            sprite.color = new Color(1, 1, 1, 0.5f);
-            yield return new WaitForSeconds(blinkInterval);
-            sprite.color = Color.white;
-            yield return new WaitForSeconds(blinkInterval);
-            timer += blinkInterval * 2;
+            if (sprite != null) // تأكد من أن sprite موجود قبل استخدامه
+            {
+                sprite.color = new Color(1, 1, 1, 0.5f);
+                yield return new WaitForSeconds(blinkInterval);
+                sprite.color = Color.white;
+                yield return new WaitForSeconds(blinkInterval);
+                timer += blinkInterval * 2;
+            }
+            else
+            {
+                Debug.LogWarning("SpriteRenderer is not assigned.");
+                break;
+            }
         }
 
         isInvincible = false;
@@ -80,7 +98,7 @@ public class Health : MonoBehaviour
         currentHealth = maxHealth;
         isDead = false;
         movement.enabled = true;
-        sprite.color = Color.white;
+        if (sprite != null) sprite.color = Color.white;
         
         if (rb != null)
         {

@@ -3,49 +3,42 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject gameOverScreen;  // The Game Over screen UI element
-    [SerializeField] private AudioClip gameOverSound;    // Game Over sound clip (optional)
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private AudioClip gameOverSound;
 
     private void Awake()
     {
-        gameOverScreen.SetActive(false);  // Hide the Game Over screen at the start
+        gameOverScreen.SetActive(false);
     }
 
     #region Game Over Functions
-
-    // Display the Game Over screen
+    //Game over function
     public void GameOver()
     {
-        gameOverScreen.SetActive(true);  // Show the Game Over screen
-
-        // Play the Game Over sound if available
-        if (gameOverSound != null)
-        {
-            AudioSource.PlayClipAtPoint(gameOverSound, transform.position);
-        }
+        gameOverScreen.SetActive(true);
+        
     }
 
-    // Restart the current level
+    //Restart level
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // Load the main menu
+    //Activate game over screen
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
     }
 
-    // Quit the game
+    //Quit game/exit play mode if in Editor
     public void Quit()
     {
-        Application.Quit(); // Works only in a built application
+        Application.Quit(); //Quits the game (only works in build)
 
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // Exit play mode in Unity Editor
+        UnityEditor.EditorApplication.isPlaying = false; //Exits play mode
         #endif
     }
-
     #endregion
 }
