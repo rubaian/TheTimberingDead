@@ -9983,7 +9983,7 @@ GameObject:
   - component: {fileID: 1141861028}
   - component: {fileID: 1141861031}
   m_Layer: 0
-  m_Name: 9-Sliced
+  m_Name: EndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10062,11 +10062,11 @@ Transform:
   m_GameObject: {fileID: 1141861027}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.63140106, y: -0.23539996, z: 3.026994}
+  m_LocalPosition: {x: 108.5014, y: -1.8354, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1556515082}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1141861031
 BoxCollider2D:
@@ -10539,7 +10539,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1191019927
 Animator:
   serializedVersion: 5
@@ -14881,7 +14881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1556515081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14909,7 +14909,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1191019928}
-  - {fileID: 1141861030}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1595150302
@@ -19256,3 +19255,4 @@ SceneRoots:
   - {fileID: 135926899}
   - {fileID: 906629038}
   - {fileID: 1556515082}
+  - {fileID: 1141861030}

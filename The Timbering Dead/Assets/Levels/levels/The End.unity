@@ -411,7 +411,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -9.6, y: -8}
+  m_AnchoredPosition: {x: -9.599998, y: -0.7294502}
   m_SizeDelta: {x: 190.637, y: 1.4589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1026033927
@@ -447,7 +447,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Ali Firas Al-Ghanim
+  m_Text: Reema Bakr Alharbi
 --- !u!222 &1026033928
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -725,7 +725,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -9.6, y: -62}
+  m_AnchoredPosition: {x: -9.6, y: -57.4}
   m_SizeDelta: {x: 190.637, y: 1.4589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1525153360
@@ -761,7 +761,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Ali Firas Al-Ghanim
+  m_Text: Ali Firas Alghanim
 --- !u!222 &1525153361
 CanvasRenderer:
   m_ObjectHideFlags: 0
