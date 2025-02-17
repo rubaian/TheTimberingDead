@@ -1840,7 +1840,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.827271, y: -284}
+  m_AnchoredPosition: {x: -11.827393, y: -284}
   m_SizeDelta: {x: 58.73523, y: -1.3748779}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &142175750
@@ -3531,10 +3531,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   patrolDistance: 2
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
@@ -4154,7 +4154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &460087520
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5663,10 +5663,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 2
   patrolDistance: 2.35
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
@@ -6130,11 +6130,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 1
+    m_FontSize: 7
     m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 33
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -6439,10 +6439,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   patrolDistance: 0.76
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
@@ -6791,10 +6791,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   patrolDistance: 1.85
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
@@ -7942,7 +7942,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0.00024414062, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &752749730
@@ -8646,7 +8646,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -362.012, y: 99.78}
+  m_AnchoredPosition: {x: -517, y: 99.78}
   m_SizeDelta: {x: 133.815, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &844313738
@@ -9137,11 +9137,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 1
+    m_FontSize: 7
     m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 33
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -10277,10 +10277,10 @@ RectTransform:
   - {fileID: 142175749}
   m_Father: {fileID: 460087520}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 18.699951}
-  m_SizeDelta: {x: -1838, y: -970}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -6.299988, y: 51.24994}
+  m_SizeDelta: {x: 245.40002, y: 68.8999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1004558629
 GameObject:
@@ -18804,11 +18804,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 126.63
+  m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1962, y: 1053.09}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -19008,10 +19008,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   patrolDistance: 1.35
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
@@ -20031,7 +20031,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.827271, y: 71.0659}
+  m_AnchoredPosition: {x: -11.827393, y: 71.06592}
   m_SizeDelta: {x: 58.73523, y: -1.3748779}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2003208392
@@ -20203,11 +20203,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 1
+    m_FontSize: 7
     m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 33
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -20259,7 +20259,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.8272705, y: -108}
+  m_AnchoredPosition: {x: -11.827393, y: -108}
   m_SizeDelta: {x: 58.735107, y: -1.3748779}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2030793377
@@ -20556,10 +20556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 2
   patrolDistance: 2.35
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
@@ -21259,10 +21259,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f567e69e7e160a343a1dae83a7be2645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   patrolDistance: 2
   wallCheckDistance: 1.12
-  attackCooldown: 3
+  attackCooldown: 0.5
   attackRangeWidth: 1.46
   attackRangeHeight: 1.78
   damage: 1
