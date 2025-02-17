@@ -1,28 +1,68 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start the game
+    [SerializeField] private GameObject settingsPanel; // نافذة الإعدادات
+    [SerializeField] private Slider volumeSlider; // شريط التحكم في الصوت
+
+    private void Start()
+    {
+        // تحقق من أن volumeSlider معين
+        if (volumeSlider == null)
+        {
+            Debug.LogError("Volume Slider is not assigned in the inspector!");
+            return;
+        }
+
+        // استرجاع مستوى الصوت المخزن مسبقًا
+        float savedVolume = PlayerPrefs.GetFloat("Volume", 0.5f);
+        volumeSlider.value = savedVolume;
+        AudioListener.volume = savedVolume; // ضبط مستوى الصوت العام
+
+        // ربط تغيير شريط الصوت بتعديل مستوى الصوت
+        volumeSlider.onValueChanged.AddListener(ChangeVolume);
+    }
+
+    // بدء اللعبة
     public void StartGame()
     {
-        SceneManager.LoadScene("Level1"); // Replace "Level1" with the name of your first level scene
+        SceneManager.LoadScene("Level1");
     }
 
-    // Open settings menu
+    // فتح قائمة الإعدادات
     public void OpenSettings()
     {
-        // Add code to open the settings menu
-        Debug.Log("Settings menu opened.");
+        if (settingsPanel != null)
+            settingsPanel.SetActive(true);
+        else
+            Debug.LogError("Settings Panel is not assigned!");
     }
 
-    // Quit the game
+    // إغلاق قائمة الإعدادات
+    public void CloseSettings()
+    {
+        if (settingsPanel != null)
+            settingsPanel.SetActive(false);
+        else
+            Debug.LogError("Settings Panel is not assigned!");
+    }
+
+    // تغيير مستوى الصوت
+    public void ChangeVolume(float volume)
+    {
+        AudioListener.volume = volume; // ضبط مستوى الصوت العام في اللعبة
+        PlayerPrefs.SetFloat("Volume", volume); // حفظ الإعداد
+        PlayerPrefs.Save();
+    }
+
+    // إنهاء اللعبة
     public void QuitGame()
     {
-        Application.Quit(); // Quits the game (only works in build)
-
+        Application.Quit();
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // Exits play mode in the editor
+        UnityEditor.EditorApplication.isPlaying = false;
         #endif
     }
 }

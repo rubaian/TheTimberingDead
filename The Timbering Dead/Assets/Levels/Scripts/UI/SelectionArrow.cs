@@ -3,9 +3,10 @@ using UnityEngine.UI;
 
 public class SelectionArrow : MonoBehaviour
 {
-    [SerializeField] private RectTransform[] buttons; // مصفوفة تحتوي على جميع الأزرار
+    [SerializeField] private RectTransform[] buttons;
     [SerializeField] private AudioClip changeSound;
     [SerializeField] private AudioClip interactSound;
+    [SerializeField] private AudioSource audioSource;
     private RectTransform arrow;
     private int currentPosition;
 
@@ -22,13 +23,11 @@ public class SelectionArrow : MonoBehaviour
 
     private void Update()
     {
-        // تغيير موقع السهم بناءً على ضغطات الأسهم
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             ChangePosition(-1);
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
             ChangePosition(1);
 
-        // التفاعل مع الزر المحدد عند الضغط على Enter أو E
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.E))
             Interact();
     }
@@ -37,41 +36,50 @@ public class SelectionArrow : MonoBehaviour
     {
         currentPosition += _change;
 
-        // التأكد من عدم الخروج عن حدود المصفوفة
         if (currentPosition < 0)
             currentPosition = buttons.Length - 1;
         else if (currentPosition >= buttons.Length)
             currentPosition = 0;
 
-        Debug.Log("Current Position: " + currentPosition); // تتبع الموضع الحالي للسهم
-
         AssignPosition();
+        PlaySound(changeSound);
     }
 
     private void AssignPosition()
     {
-        // التأكد من أن السهم يتحرك إلى الموضع الصحيح
-        if (buttons.Length > 0 && buttons[currentPosition] != null)
+        if (buttons == null || buttons.Length == 0 || buttons[currentPosition] == null)
         {
-            arrow.position = new Vector3(arrow.position.x, buttons[currentPosition].position.y);
+            Debug.LogError("Buttons array is not set or contains null elements!");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("Button at position " + currentPosition + " is missing!");
-        }
+        arrow.position = new Vector3(arrow.position.x, buttons[currentPosition].position.y);
     }
 
     private void Interact()
     {
-        // التأكد من أن الزر يحتوي على مكون Button قبل محاولة الضغط عليه
+        if (buttons[currentPosition] == null)
+        {
+            Debug.LogError("Button reference is missing!");
+            return;
+        }
+
         Button button = buttons[currentPosition].GetComponent<Button>();
         if (button != null)
         {
             button.onClick.Invoke();
+            PlaySound(interactSound);
         }
         else
         {
             Debug.LogWarning("No Button component found on: " + buttons[currentPosition].name);
+        }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 }
