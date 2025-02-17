@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private float attackCooldown; // Time between consecutive attacks
-    [SerializeField] private Transform attackPoint; // Attack point (where the sword hits)
     [SerializeField] private float attackRange = 0.5f; // Range of the attack (how far it reaches)
     [SerializeField] private LayerMask enemyLayer; // The layer the enemies (zombies) belong to
 
@@ -26,7 +25,7 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown && playerMovement.CanAttack())
             Attack(); // Perform attack
 
-        cooldownTimer += Time.deltaTime; // Increase cooldown timer over time
+        cooldownTimer += Time.deltaTime; // Increase cooldown timer
     }
 
     private void Attack()
@@ -35,8 +34,8 @@ public class PlayerAttack : MonoBehaviour
         cooldownTimer = 0; // Reset the cooldown timer
         SoundsManager.instance.PlaySound(attackSound); // Play attack sound
 
-        // Find all enemies within the attack range
-        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        // Find all enemies within the attack range based on player's position
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayer);
 
         Debug.Log("Enemies detected: " + enemiesToDamage.Length); // Debug to check if enemies are detected
 
@@ -44,11 +43,11 @@ public class PlayerAttack : MonoBehaviour
         {
             if (enemy != null)
             {
-                // Apply damage to the enemy (zombie)
-                Health enemyHealth = enemy.GetComponent<Health>();
-                if (enemyHealth != null)
+                // Check if the enemy has a DamageTracker component
+                DamageTracker damageTracker = enemy.GetComponent<DamageTracker>();
+                if (damageTracker != null)
                 {
-                    enemyHealth.TakeDamage(1); // Apply 1 damage (adjust value as needed)
+                    damageTracker.TakeDamage(1); // Apply 1 damage (adjust value as needed)
                     Debug.Log("Enemy hit: " + enemy.name); // Debug to confirm damage application
                 }
             }
@@ -58,10 +57,7 @@ public class PlayerAttack : MonoBehaviour
     // Visualize the attack range in the editor when selected
     private void OnDrawGizmosSelected()
     {
-        if (attackPoint == null)
-            return;
-
-        // Draw a wireframe circle to represent the attack range
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        // Draw a wireframe circle to represent the attack range around the player
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }
