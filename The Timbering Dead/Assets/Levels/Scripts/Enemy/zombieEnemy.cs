@@ -45,6 +45,9 @@ public class ZombieEnemy : MonoBehaviour
 
     private void Update()
     {
+        if (!PlayerInSight())
+            OnAttackEnd();
+
         if (!isAttacking) Patrol();
         cooldownTimer += Time.deltaTime;
 
@@ -55,7 +58,6 @@ public class ZombieEnemy : MonoBehaviour
     private void StartAttack()
     {
         cooldownTimer = 0;
-        hasAttacked = true;
         isAttacking = true;
         anim.SetTrigger("attack");
         rb.velocity = Vector2.zero;
@@ -68,6 +70,7 @@ public class ZombieEnemy : MonoBehaviour
     {
         Debug.Log("Zombie attacking player!"); // Debug message
         playerHealth.TakeDamage(damage);
+        OnAttackEnd();
     }
 }
 
