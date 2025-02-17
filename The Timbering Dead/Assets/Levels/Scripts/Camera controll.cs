@@ -1,15 +1,28 @@
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour  // Changed from Camera to PlayerCamera
+public class PlayerCamera : MonoBehaviour
 {
-    internal static object main;
     [SerializeField] private float speed;
-    private UnityEngine.Vector3 velocity = UnityEngine.Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
     [SerializeField] private Transform player;
+    private bool isCameraActive = true; // للتحكم في حركة الكاميرا
 
     private void Update()
     {
-        // Camera follows the player, keeping the same distance on the Z-axis
-        transform.position = new UnityEngine.Vector3(player.position.x, player.position.y, transform.position.z);
+        if (isCameraActive)
+        {
+            // الكاميرا تتبع اللاعب، مع الحفاظ على نفس المسافة على المحور Z
+            transform.position = new Vector3(player.position.x, player.position.y, transform.position.z);
+        }
+    }
+
+    public void StopCamera()
+    {
+        isCameraActive = false; // تعطيل حركة الكاميرا
+    }
+
+    public void StartCamera()
+    {
+        isCameraActive = true; // تفعيل حركة الكاميرا
     }
 }
