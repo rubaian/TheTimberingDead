@@ -2,104 +2,128 @@ using UnityEngine;
 
 public class Playermovement : MonoBehaviour
 {
-    private float horizontal;
-    private float speed = 8f;
-    private float jumpForce = 15f;
-    private bool isFacingRight = true;
-    private bool grounded;
+private float horizontal;
+private float speed = 8f;
+private float jumpForce = 15f;
+private bool isFacingRight = true;
+private bool grounded;
+[SerializeField] private Rigidbody2D rb;
+[SerializeField] private Transform groundCheck;
+[SerializeField] private LayerMask groundLayer;
+[SerializeField] private Animator anim;
 
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Animator anim;
+[Header("Sounds")]
+[SerializeField] private AudioClip jumpSound; // Sound for jumping
+[SerializeField] private AudioClip walkSound; // Sound for walking
+private AudioSource audioSource; // AudioSource for playing sounds
 
-    [Header("Sounds")]
-    [SerializeField] private AudioClip jumpSound; // Sound for jumping
-    [SerializeField] private AudioClip walkSound; // Sound for walking
+private bool isWalking = false; // Track if the player is walking
 
-    private bool isWalking = false; // Track if the player is walking
+void Start()
+{
+    anim = GetComponent<Animator>();
+    audioSource = GetComponent<AudioSource>(); // Get the AudioSource component
 
-    void Start()
+    // تأكد من أن AudioSource تم تعيينه
+    if (audioSource == null)
     {
-        anim = GetComponent<Animator>();
+        Debug.LogError("AudioSource component is missing on this GameObject!");
     }
 
-    void Update()
+    // تأكد من أن الأصوات تم تعيينها
+    if (jumpSound == null || walkSound == null)
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        Debug.LogWarning("Jump or Walk sound not assigned in the inspector!");
+    }
+}
 
-        // Jump
-        if (Input.GetButtonDown("Jump") && IsGrounded())
-        {
-            Jump();
-        }
+void Update()
+{
+    horizontal = Input.GetAxisRaw("Horizontal");
 
-        // Reduce jump force
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
+    // Jump
+    if (Input.GetButtonDown("Jump") && IsGrounded())
+    {
+        Jump();
+    }
 
-        Flip();
+    // Reduce jump force
+    if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+    {
+        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+    }
 
-        // Set the animator parameters
-        anim.SetBool("walk", horizontal != 0);
-        anim.SetBool("grounded", grounded);
+    Flip();
 
-        // Play walking sound if the player is moving on the ground
-        if (IsGrounded() && horizontal != 0 && !isWalking)
+    // Set the animator parameters
+    anim.SetBool("walk", horizontal != 0);
+    anim.SetBool("grounded", grounded);
+
+    // Play walking sound if the player is moving on the ground
+    if (IsGrounded() && horizontal != 0)
+    {
+        if (!isWalking)
         {
             isWalking = true;
-            SoundsManager.instance.PlaySound(walkSound);
-        }
-        else if ((!IsGrounded() || horizontal == 0) && isWalking)
-        {
-            isWalking = false;
+            audioSource.clip = walkSound;
+            audioSource.loop = true; // Loop the walk sound
+            audioSource.Play();
         }
     }
-
-    private void FixedUpdate()
+    else if ((!IsGrounded() || horizontal == 0) && isWalking)
     {
-        // Move the player
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        isWalking = false;
+        audioSource.Stop(); // Stop the walking sound
     }
+}
 
-    // Check if the player is grounded
-    private bool IsGrounded()
-    {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-    }
+private void FixedUpdate()
+{
+    // Move the player
+    rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+}
 
-    // Flip the player
-    private void Flip()
-    {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
-        {
-            isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
-        }
-    }
+// Check if the player is grounded
+private bool IsGrounded()
+{
+    return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+}
 
-    // Jump animation
-    private void Jump()
+// Flip the player
+private void Flip()
+{
+    if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        anim.SetTrigger("jump");
-        grounded = false;
-        SoundsManager.instance.PlaySound(jumpSound); // Play jump sound
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
     }
+}
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-            grounded = true;
-    }
+// Jump animation
+private void Jump()
+{
+    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    anim.SetTrigger("jump");
+    grounded = false;
 
-    // Method to check if the player can attack (only if not moving horizontally and grounded)
-    public bool CanAttack()
+    // تأكد من أن الصوت لا يتكرر
+    if (audioSource != null && jumpSound != null && !audioSource.isPlaying)
     {
-        return horizontal == 0 && IsGrounded();
+        audioSource.PlayOneShot(jumpSound); // Play jump sound once
     }
+}
+
+private void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.CompareTag("Ground"))
+        grounded = true;
+}
+
+// Method to check if the player can attack (only if not moving horizontally and grounded)
+public bool CanAttack()
+{
+    return horizontal == 0 && IsGrounded();
+}
 }
